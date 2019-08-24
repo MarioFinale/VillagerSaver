@@ -10,7 +10,9 @@ public class tListener implements Listener{
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
         Entity villager = event.getEntity();
+        if(!(villager instanceof LivingEntity)) return;
         LivingEntity tvillager = (LivingEntity)villager;
+        if (event.getDamager() == null) return;
         Entity tkiller = event.getDamager();
         if (!(tvillager.getType() == EntityType.VILLAGER)) return;
         if (!((tkiller.getType() == EntityType.ZOMBIE) || (tkiller.getType() == EntityType.ZOMBIE_VILLAGER))) return;
