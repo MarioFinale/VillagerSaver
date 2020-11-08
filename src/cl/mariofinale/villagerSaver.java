@@ -1,7 +1,4 @@
 package cl.mariofinale;
-import net.minecraft.server.v1_16_R2.MerchantRecipeList;
-import net.minecraft.server.v1_16_R2.VillagerData;
-import net.minecraft.server.v1_16_R2.VillagerTrades;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.plugin.Plugin;

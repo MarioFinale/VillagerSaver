@@ -6,7 +6,6 @@ import org.bukkit.entity.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.UUID;
