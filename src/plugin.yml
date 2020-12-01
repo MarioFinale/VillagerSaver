@@ -4,3 +4,7 @@ author: MarioFinale
 main: cl.mariofinale.villagerSaver
 api-version: 1.13
 website: mariofinale.cl
+commands:
+  villagersaver:
+    description: VillagerSaver commands.
+    usage: /villagersaver <blacklistworld - unblacklistworld>
