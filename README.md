@@ -10,9 +10,9 @@ It preserves trades and updates reputation.
 - Fixes [#6](https://github.com/MarioFinale/VillagerSaver/issues/4)
 
 ### 1.1.1:
-World blacklist, usage:
-- /villagersaver blacklistworld {world_name}
-- /villagersaver unblacklistworld {world_name}
+- World blacklist, usage:
+  - /villagersaver blacklistworld {world_name}
+  - /villagersaver unblacklistworld {world_name}
 - Fixes [#4](https://github.com/MarioFinale/VillagerSaver/issues/4)
 - Fixes [#3](https://github.com/MarioFinale/VillagerSaver/issues/3)
 
