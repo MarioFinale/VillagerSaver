@@ -4,12 +4,12 @@
 Prevents the death of villagers from zombies. They will be always converted to zombie villagers so, worst case scenario the player can just heal them.
 It preserves trades and updates reputation.
 
-##Changelog
+## Changelog
 
-###1.1.2
+### 1.1.2
 - Fixes [#6](https://github.com/MarioFinale/VillagerSaver/issues/4)
 
-###1.1.1:
+### 1.1.1:
 World blacklist, usage:
 - /villagersaver blacklistworld {world_name}
 - /villagersaver unblacklistworld {world_name}
