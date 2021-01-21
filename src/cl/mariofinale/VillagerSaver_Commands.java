@@ -1,5 +1,4 @@
 package cl.mariofinale;
-
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -13,17 +12,14 @@ public class VillagerSaver_Commands implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
         if (!(sender instanceof Player)){
             return true;
         }
-
         Player player = (Player) sender;
         if (player == null) return true;
         if ((args == null || args.length <= 1)) {
             return false;
         }
-
         switch (args[0].toUpperCase()){
             case "BLACKLISTWORLD":
                 return AddWorldToBlackList(player, args[1]);
@@ -46,7 +42,6 @@ public class VillagerSaver_Commands implements CommandExecutor {
             }else{
                 SendMessageToPlayer(player, "The World '" + worldName + "' already is on the blacklist.");
             }
-
         }else {
             SendMessageToPlayer(player, "The World '" + worldName + "' does not exist.");
             String availableWorlds = "";
@@ -69,12 +64,10 @@ public class VillagerSaver_Commands implements CommandExecutor {
         return true;
     }
 
-
     public static boolean SendMessageToPlayer(Player player, String message) {
         if (!player.isOnline()) return false;
         if (player.isBanned()) return false;
         if ((player == null)) return false;
-
         String resultingMessage = VillagerSaver_PluginVars.PluginPrefix + " " + message;
         player.sendMessage(resultingMessage);
         return true;
