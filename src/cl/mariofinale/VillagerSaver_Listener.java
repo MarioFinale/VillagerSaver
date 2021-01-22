@@ -154,7 +154,7 @@ public class VillagerSaver_Listener implements Listener{
         Entity tKiller = event.getDamager();
         if (!(tVillager.getHealth() - event.getDamage() <= 0)) return;
         if (!(tVillager.getType() == EntityType.VILLAGER)) return;
-        if (!((tKiller.getType() == EntityType.ZOMBIE) || (tKiller.getType() == EntityType.ZOMBIE_VILLAGER)  || (tKiller.getType() == EntityType.DROWNED))) return;
+        if (!((tKiller.getType() == EntityType.ZOMBIE) || (tKiller.getType() == EntityType.ZOMBIE_VILLAGER)  || (tKiller.getType() == EntityType.DROWNED) || (tKiller.getType() == EntityType.HUSK))) return;
         if (villagerSaver.WorldBlackList.contains(tVillager.getWorld().getName())) return;
         StoreAndClearVillager(villager);
         event.setCancelled(true);
