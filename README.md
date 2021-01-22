@@ -6,6 +6,12 @@ It preserves trades, homes, job location and updates reputation.
 
 ## Changelog
 
+### 1.1.4
+- Adds [#8](https://github.com/MarioFinale/VillagerSaver/issues/8)
+
+### 1.1.3
+- Fixes [#7](https://github.com/MarioFinale/VillagerSaver/issues/7)
+
 ### 1.1.2
 - Fixes [#6](https://github.com/MarioFinale/VillagerSaver/issues/4)
 
