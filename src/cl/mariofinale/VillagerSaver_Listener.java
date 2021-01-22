@@ -12,9 +12,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -150,9 +152,9 @@ public class VillagerSaver_Listener implements Listener{
         LivingEntity tVillager = (LivingEntity)villager;
         if (event.getDamager() == null) return;
         Entity tKiller = event.getDamager();
-        if (!(tVillager.getType() == EntityType.VILLAGER)) return;
-        if (!((tKiller.getType() == EntityType.ZOMBIE) || (tKiller.getType() == EntityType.ZOMBIE_VILLAGER))) return;
         if (!(tVillager.getHealth() - event.getDamage() <= 0)) return;
+        if (!(tVillager.getType() == EntityType.VILLAGER)) return;
+        if (!((tKiller.getType() == EntityType.ZOMBIE) || (tKiller.getType() == EntityType.ZOMBIE_VILLAGER)  || (tKiller.getType() == EntityType.DROWNED))) return;
         if (villagerSaver.WorldBlackList.contains(tVillager.getWorld().getName())) return;
         StoreAndClearVillager(villager);
         event.setCancelled(true);
@@ -165,21 +167,34 @@ public class VillagerSaver_Listener implements Listener{
         Ageable tAVillager = (Ageable) villager;
         Villager oldVillager = (Villager) villager;
         if (tAVillager.isAdult()){
-            Entity newZombie =  tWorld.spawnEntity(tLoc, EntityType.ZOMBIE_VILLAGER);
-            villagerSaver.VillagersReputation.put(newZombie.getUniqueId(), oldVillager.getReputations());
-            villagerSaver.VillagersTypes.put(newZombie.getUniqueId(),oldVillager.getVillagerType());
-            villagerSaver.VillagersProfessions.put(newZombie.getUniqueId(),oldVillager.getProfession());
-            villagerSaver.VillagersLevels.put(newZombie.getUniqueId(), oldVillager.getVillagerLevel());
-            villagerSaver.VillagersExp.put(newZombie.getUniqueId(), oldVillager.getVillagerExperience());
-            villagerSaver.VillagersTrades.put(newZombie.getUniqueId(), new ArrayList<>(oldVillager.getRecipes()));
-            villagerSaver.VillagersJobSites.put(newZombie.getUniqueId(), oldVillager.getMemory(MemoryKey.JOB_SITE));
-            villagerSaver.VillagersHomes.put(newZombie.getUniqueId(), oldVillager.getMemory(MemoryKey.HOME));
+            Map<UUID,Reputation> villagerReputations = oldVillager.getReputations();
+            Villager.Type villagerType = oldVillager.getVillagerType();
+            Villager.Profession villagerProfession = oldVillager.getProfession();
+            int villagerLevel = oldVillager.getVillagerLevel();
+            int villagerExp = oldVillager.getVillagerExperience();
+            List<MerchantRecipe> villagerTrades = new ArrayList<>(oldVillager.getRecipes());
+            Location villagerJobSite =  oldVillager.getMemory(MemoryKey.JOB_SITE);
+            Location villagerHome = oldVillager.getMemory(MemoryKey.HOME);
+
             tVillager.setMemory(MemoryKey.JOB_SITE, new Location(tVillager.getWorld(), 0d,0d,0d));
             tVillager.setMemory(MemoryKey.HOME, new Location(tVillager.getWorld(), 0d,0d,0d));
             tVillager.remove();
+
+            Entity newZombie =  tWorld.spawnEntity(tLoc, EntityType.ZOMBIE_VILLAGER);
             ZombieVillager zVillager =  (ZombieVillager) newZombie;
-            zVillager.setVillagerProfession(oldVillager.getProfession());
+            zVillager.setVillagerProfession(villagerProfession);
             zVillager.setAdult();
+            UUID zombieUUID = newZombie.getUniqueId();
+
+            villagerSaver.VillagersReputation.put(zombieUUID, villagerReputations);
+            villagerSaver.VillagersTypes.put(zombieUUID,villagerType);
+            villagerSaver.VillagersProfessions.put(zombieUUID,villagerProfession);
+            villagerSaver.VillagersLevels.put(zombieUUID, villagerLevel);
+            villagerSaver.VillagersExp.put(zombieUUID, villagerExp);
+            villagerSaver.VillagersTrades.put(zombieUUID, villagerTrades);
+            villagerSaver.VillagersJobSites.put(zombieUUID, villagerJobSite);
+            villagerSaver.VillagersHomes.put(zombieUUID, villagerHome);
+
         }else{
             tVillager.remove();
             Entity newZombie =  tWorld.spawnEntity(tLoc, EntityType.ZOMBIE_VILLAGER);
