@@ -1,5 +1,5 @@
 package cl.mariofinale;
-import com.destroystokyo.paper.entity.villager.Reputation;
+import net.minecraft.server.v1_16_R3.Reputation;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -17,7 +17,7 @@ public class villagerSaver extends JavaPlugin{
     public static HashMap<UUID, Integer> VillagersExp = new HashMap();
     public static HashMap<UUID, Villager.Profession> VillagersProfessions = new HashMap();
     public static HashMap<UUID, Villager.Type> VillagersTypes = new HashMap();
-    public static HashMap<UUID, Map<UUID, Reputation>> VillagersReputation = new HashMap();
+    public static HashMap<UUID, Reputation> VillagersReputation = new HashMap();
     public static HashMap<UUID, Location> VillagersJobSites = new HashMap();
     public static HashMap<UUID, Location> VillagersHomes = new HashMap();
     public static HashMap<UUID, UUID> VillagersHealers = new HashMap();

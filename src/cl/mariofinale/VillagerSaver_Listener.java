@@ -1,10 +1,12 @@
 package cl.mariofinale;
-import com.destroystokyo.paper.entity.villager.Reputation;
-import com.destroystokyo.paper.entity.villager.ReputationType;
+import net.minecraft.server.v1_16_R3.EntityVillager;
+import net.minecraft.server.v1_16_R3.Reputation;
+import net.minecraft.server.v1_16_R3.ReputationType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftVillager;
 import org.bukkit.entity.*;
 import org.bukkit.entity.memory.MemoryKey;
 import org.bukkit.event.entity.*;
@@ -53,26 +55,47 @@ public class VillagerSaver_Listener implements Listener{
         UUID villagerUUID = villager.getUniqueId();
 
         if (villagerSaver.VillagersHealers.containsKey(villagerUUID)){
+            CraftVillager newCraftVillager = (CraftVillager) villager;
+            EntityVillager newEntVillager = newCraftVillager.getHandle();
             UUID healerUUID = villagerSaver.VillagersHealers.get(villagerUUID);
-            Map<UUID, Reputation> rep = villagerSaver.VillagersReputation.get(villagerUUID);
-            Reputation reputation = rep.get(healerUUID);
-            if (reputation == null) reputation = new Reputation();
+            Reputation newReputations = newEntVillager.fj();
+            Reputation originalReputations = villagerSaver.VillagersReputation.get(villagerUUID);
+            Map<UUID, Reputation.a> originalReputationsMap = originalReputations.getReputations();
 
-            int major_positive = reputation.getReputation(ReputationType.MAJOR_POSITIVE);
-            int minor_positive = reputation.getReputation(ReputationType.MINOR_POSITIVE);
+            for (Map.Entry<UUID, Reputation.a> rep: originalReputationsMap.entrySet()){
+                UUID entityUUID = rep.getKey();
+                int majorPositive = originalReputations.a(entityUUID, reputationType -> reputationType == ReputationType.MAJOR_POSITIVE);
+                int minorPositive = originalReputations.a(entityUUID, reputationType -> reputationType == ReputationType.MINOR_POSITIVE);
+                int majorNegative = originalReputations.a(entityUUID, reputationType -> reputationType == ReputationType.MAJOR_NEGATIVE);
+                int minorNegative = originalReputations.a(entityUUID, reputationType -> reputationType == ReputationType.MINOR_NEGATIVE);
+                int trading = originalReputations.a(entityUUID, reputationType -> reputationType == ReputationType.TRADING);
 
-            major_positive += 20;
-            minor_positive += 25;
+                int oldMajorPositive = newReputations.a(entityUUID, reputationType -> reputationType == ReputationType.MAJOR_POSITIVE);
+                int oldMinorPositive = newReputations.a(entityUUID, reputationType -> reputationType == ReputationType.MINOR_POSITIVE);
+                int oldMajorNegative = newReputations.a(entityUUID, reputationType -> reputationType == ReputationType.MAJOR_NEGATIVE);
+                int oldMinorNegative = newReputations.a(entityUUID, reputationType -> reputationType == ReputationType.MINOR_NEGATIVE);
+                int oldTrading = newReputations.a(entityUUID, reputationType -> reputationType == ReputationType.TRADING);
 
-            if (major_positive > 100) major_positive = 100;
-            if (minor_positive > 200) minor_positive = 200;
+                newReputations.a(entityUUID, ReputationType.MAJOR_POSITIVE, -1 * oldMajorPositive);
+                newReputations.a(entityUUID, ReputationType.MINOR_POSITIVE, -1 * oldMinorPositive);
+                newReputations.a(entityUUID, ReputationType.MAJOR_NEGATIVE, -1 * oldMajorNegative);
+                newReputations.a(entityUUID, ReputationType.MINOR_NEGATIVE, -1 * oldMinorNegative);
+                newReputations.a(entityUUID, ReputationType.TRADING, -1 * oldTrading);
 
-            reputation.setReputation(ReputationType.MAJOR_POSITIVE, major_positive);
-            reputation.setReputation(ReputationType.MINOR_POSITIVE, minor_positive);
+                if (entityUUID == healerUUID){
+                    majorPositive += 20;
+                    minorPositive += 25;
+                    if (majorPositive > 100) majorPositive = 100;
+                    if (minorPositive > 200) minorPositive = 200;
+                }
 
-            rep.put(healerUUID,reputation);
-            villager.setReputations(rep);
+                newReputations.a(entityUUID, ReputationType.MAJOR_POSITIVE,majorPositive);
+                newReputations.a(entityUUID, ReputationType.MINOR_POSITIVE,minorPositive);
+                newReputations.a(entityUUID, ReputationType.MAJOR_NEGATIVE, majorNegative);
+                newReputations.a(entityUUID, ReputationType.MINOR_NEGATIVE, minorNegative);
+                newReputations.a(entityUUID, ReputationType.TRADING,trading);
 
+            }
         }
         villagerSaver.VillagersReputation.remove(villagerUUID);
         villagerSaver.VillagersHealers.remove(villagerUUID);
@@ -167,7 +190,10 @@ public class VillagerSaver_Listener implements Listener{
         Ageable tAVillager = (Ageable) villager;
         Villager oldVillager = (Villager) villager;
         if (tAVillager.isAdult()){
-            Map<UUID,Reputation> villagerReputations = oldVillager.getReputations();
+            CraftVillager craftVillager = (CraftVillager) villager;
+            EntityVillager entityVillager = craftVillager.getHandle();
+            Reputation villagerReputations = entityVillager.fj();
+
             Villager.Type villagerType = oldVillager.getVillagerType();
             Villager.Profession villagerProfession = oldVillager.getProfession();
             int villagerLevel = oldVillager.getVillagerLevel();
