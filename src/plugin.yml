@@ -1,5 +1,5 @@
 name: VillagerSaver
-version: 1.1.5
+version: 1.2.0
 author: MarioFinale
 main: cl.mariofinale.villagerSaver
 api-version: 1.13
@@ -8,3 +8,4 @@ commands:
   villagersaver:
     description: VillagerSaver commands.
     usage: /villagersaver <blacklistworld - unblacklistworld>
+
