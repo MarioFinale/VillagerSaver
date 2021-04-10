@@ -201,6 +201,7 @@ public class VillagerSaver_Listener implements Listener{
             List<MerchantRecipe> villagerTrades = new ArrayList<>(oldVillager.getRecipes());
             Location villagerJobSite =  oldVillager.getMemory(MemoryKey.JOB_SITE);
             Location villagerHome = oldVillager.getMemory(MemoryKey.HOME);
+            Entity vehicle = tVillager.getVehicle();
 
             tVillager.setMemory(MemoryKey.JOB_SITE, new Location(tVillager.getWorld(), 0d,0d,0d));
             tVillager.setMemory(MemoryKey.HOME, new Location(tVillager.getWorld(), 0d,0d,0d));
@@ -211,6 +212,10 @@ public class VillagerSaver_Listener implements Listener{
             zVillager.setVillagerProfession(villagerProfession);
             zVillager.setAdult();
             UUID zombieUUID = newZombie.getUniqueId();
+
+            if (vehicle != null) {
+                vehicle.addPassenger(zVillager);
+            }
 
             villagerSaver.VillagersReputation.put(zombieUUID, villagerReputations);
             villagerSaver.VillagersTypes.put(zombieUUID,villagerType);
