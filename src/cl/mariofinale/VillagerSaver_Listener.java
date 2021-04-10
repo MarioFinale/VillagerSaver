@@ -189,6 +189,8 @@ public class VillagerSaver_Listener implements Listener{
         World tWorld = tVillager.getWorld();
         Ageable tAVillager = (Ageable) villager;
         Villager oldVillager = (Villager) villager;
+        Entity vehicle = tVillager.getVehicle();
+        ZombieVillager zVillager;
         if (tAVillager.isAdult()){
             CraftVillager craftVillager = (CraftVillager) villager;
             EntityVillager entityVillager = craftVillager.getHandle();
@@ -201,14 +203,13 @@ public class VillagerSaver_Listener implements Listener{
             List<MerchantRecipe> villagerTrades = new ArrayList<>(oldVillager.getRecipes());
             Location villagerJobSite =  oldVillager.getMemory(MemoryKey.JOB_SITE);
             Location villagerHome = oldVillager.getMemory(MemoryKey.HOME);
-            Entity vehicle = tVillager.getVehicle();
 
             tVillager.setMemory(MemoryKey.JOB_SITE, new Location(tVillager.getWorld(), 0d,0d,0d));
             tVillager.setMemory(MemoryKey.HOME, new Location(tVillager.getWorld(), 0d,0d,0d));
             tVillager.remove();
 
             Entity newZombie =  tWorld.spawnEntity(tLoc, EntityType.ZOMBIE_VILLAGER);
-            ZombieVillager zVillager =  (ZombieVillager) newZombie;
+            zVillager =  (ZombieVillager) newZombie;
             zVillager.setVillagerProfession(villagerProfession);
             zVillager.setAdult();
             UUID zombieUUID = newZombie.getUniqueId();
@@ -229,8 +230,12 @@ public class VillagerSaver_Listener implements Listener{
         }else{
             tVillager.remove();
             Entity newZombie =  tWorld.spawnEntity(tLoc, EntityType.ZOMBIE_VILLAGER);
-            ZombieVillager zVillager =  (ZombieVillager) newZombie;
+            zVillager =  (ZombieVillager) newZombie;
             zVillager.setBaby();
+
+        }
+        if (vehicle != null) {
+            vehicle.addPassenger(zVillager);
         }
     }
 }
