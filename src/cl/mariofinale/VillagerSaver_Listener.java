@@ -230,6 +230,7 @@ public class VillagerSaver_Listener implements Listener{
             zVillager.setBaby();
         }
 
+        if (vehicle != null) { // Make entity ride vehicle if the original was in one
             vehicle.addPassenger(zVillager);
         }
     }
