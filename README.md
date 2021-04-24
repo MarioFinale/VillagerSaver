@@ -6,6 +6,8 @@ It preserves trades, homes, job location and updates reputation.
 
 ## Changelog
 
+### 1.1.6
+- Fixes [#10](https://github.com/MarioFinale/VillagerSaver/issues/10) (Many thanks to Kazama)
 
 ### 1.1.5
 - Spigot support.
