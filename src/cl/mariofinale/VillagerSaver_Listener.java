@@ -146,7 +146,7 @@ public class VillagerSaver_Listener implements Listener{
             villagerSaver.VillagersJobSites.remove(zombieUUID);
             villagerSaver.VillagersHomes.remove(zombieUUID);
         }
-        if (villagerSaver.VillagersHealers.containsKey(zombieUUID)){
+        if (villagerSaver.VillagersHealers.containsKey(zombieUUID)){ //In a different "if" so baby villagers reputation also gets updated
             villagerSaver.VillagersHealers.put(villagerUUID, villagerSaver.VillagersHealers.get(zombieUUID));
             villagerSaver.VillagersHealers.remove(zombieUUID);
         }
@@ -214,10 +214,6 @@ public class VillagerSaver_Listener implements Listener{
             zVillager.setAdult();
             UUID zombieUUID = newZombie.getUniqueId();
 
-            if (vehicle != null) {
-                vehicle.addPassenger(zVillager);
-            }
-
             villagerSaver.VillagersReputation.put(zombieUUID, villagerReputations);
             villagerSaver.VillagersTypes.put(zombieUUID,villagerType);
             villagerSaver.VillagersProfessions.put(zombieUUID,villagerProfession);
@@ -229,12 +225,11 @@ public class VillagerSaver_Listener implements Listener{
 
         }else{
             tVillager.remove();
-            Entity newZombie =  tWorld.spawnEntity(tLoc, EntityType.ZOMBIE_VILLAGER);
+            Entity newZombie =  tWorld.spawnEntity(tLoc, EntityType.ZOMBIE_VILLAGER); //Baby villagers never have any profession
             zVillager =  (ZombieVillager) newZombie;
             zVillager.setBaby();
-
         }
-        if (vehicle != null) {
+
             vehicle.addPassenger(zVillager);
         }
     }
