@@ -189,6 +189,8 @@ public class VillagerSaver_Listener implements Listener{
         World tWorld = tVillager.getWorld();
         Ageable tAVillager = (Ageable) villager;
         Villager oldVillager = (Villager) villager;
+        Entity vehicle = tVillager.getVehicle();
+        ZombieVillager zVillager;
         if (tAVillager.isAdult()){
             CraftVillager craftVillager = (CraftVillager) villager;
             EntityVillager entityVillager = craftVillager.getHandle();
@@ -207,10 +209,14 @@ public class VillagerSaver_Listener implements Listener{
             tVillager.remove();
 
             Entity newZombie =  tWorld.spawnEntity(tLoc, EntityType.ZOMBIE_VILLAGER);
-            ZombieVillager zVillager =  (ZombieVillager) newZombie;
+            zVillager =  (ZombieVillager) newZombie;
             zVillager.setVillagerProfession(villagerProfession);
             zVillager.setAdult();
             UUID zombieUUID = newZombie.getUniqueId();
+
+            if (vehicle != null) {
+                vehicle.addPassenger(zVillager);
+            }
 
             villagerSaver.VillagersReputation.put(zombieUUID, villagerReputations);
             villagerSaver.VillagersTypes.put(zombieUUID,villagerType);
@@ -224,8 +230,12 @@ public class VillagerSaver_Listener implements Listener{
         }else{
             tVillager.remove();
             Entity newZombie =  tWorld.spawnEntity(tLoc, EntityType.ZOMBIE_VILLAGER);
-            ZombieVillager zVillager =  (ZombieVillager) newZombie;
+            zVillager =  (ZombieVillager) newZombie;
             zVillager.setBaby();
+
+        }
+        if (vehicle != null) {
+            vehicle.addPassenger(zVillager);
         }
     }
 }
