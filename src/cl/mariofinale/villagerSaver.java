@@ -1,6 +1,10 @@
 package cl.mariofinale;
+import net.minecraft.server.v1_16_R3.Reputation;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Villager;
+import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
@@ -8,6 +12,15 @@ import java.util.*;
 
 public class villagerSaver extends JavaPlugin{
 
+    public static HashMap<UUID, Integer> VillagersLevels = new HashMap();
+    public static HashMap<UUID, List<MerchantRecipe>> VillagersTrades = new HashMap();
+    public static HashMap<UUID, Integer> VillagersExp = new HashMap();
+    public static HashMap<UUID, Villager.Profession> VillagersProfessions = new HashMap();
+    public static HashMap<UUID, Villager.Type> VillagersTypes = new HashMap();
+    public static HashMap<UUID, Reputation> VillagersReputation = new HashMap();
+    public static HashMap<UUID, Location> VillagersJobSites = new HashMap();
+    public static HashMap<UUID, Location> VillagersHomes = new HashMap();
+    public static HashMap<UUID, UUID> VillagersHealers = new HashMap();
     public static ArrayList<String> WorldBlackList = new ArrayList<>();
     public static Plugin plugin;
 
