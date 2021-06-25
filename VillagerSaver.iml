@@ -10,11 +10,11 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Desktop/Test srv/cache/patched_1.16.5.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/Test srv/cache/patched_1.17.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/Desktop/Test srv/cache/patched_1.16.5.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/Test srv/cache/patched_1.17.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>

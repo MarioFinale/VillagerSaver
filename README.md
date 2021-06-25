@@ -6,7 +6,10 @@ It preserves trades, homes, job location and updates reputation.
 
 ## Changelog
 
-### 1.1.6
+### 1.2.1
+- Updated to 1.17
+
+### 1.2.0
 - Fixes [#13](https://github.com/MarioFinale/VillagerSaver/issues/13) (Merges Kasama's fork into main)
 
 ### 1.1.6
