@@ -8,4 +8,3 @@ commands:
   villagersaver:
     description: VillagerSaver commands.
     usage: /villagersaver <blacklistworld - unblacklistworld>
-
