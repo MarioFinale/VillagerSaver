@@ -177,6 +177,7 @@ public class VillagerSaver_Listener implements Listener{
         Entity tKiller = event.getDamager();
         if (!(tVillager.getHealth() - event.getDamage() <= 0)) return;
         if (!(tVillager.getType() == EntityType.VILLAGER)) return;
+<<<<<<< HEAD
         if (!((tKiller.getType() == EntityType.ZOMBIE) || (tKiller.getType() == EntityType.ZOMBIE_VILLAGER)  || (tKiller.getType() == EntityType.DROWNED) || (tKiller.getType() == EntityType.HUSK))) return;
         if (villagerSaver.WorldBlackList.contains(tVillager.getWorld().getName())) return;
         StoreAndClearVillager(villager);
@@ -228,6 +229,38 @@ public class VillagerSaver_Listener implements Listener{
             Entity newZombie =  tWorld.spawnEntity(tLoc, EntityType.ZOMBIE_VILLAGER); //Baby villagers never have any profession
             zVillager =  (ZombieVillager) newZombie;
             zVillager.setBaby();
+=======
+        if (!((tKiller.getType() == EntityType.ZOMBIE) || (tKiller.getType() == EntityType.ZOMBIE_VILLAGER)  || (tKiller.getType() == EntityType.DROWNED) || (tKiller.getType() == EntityType.HUSK) || (tKiller.getType() == EntityType.ZOMBIFIED_PIGLIN))) return;
+        if (villagerSaver.WorldBlackList.contains(tVillager.getWorld().getName())) return;
+        handleSpawnZombieVillager(tVillager);
+        event.setCancelled(true);
+    }
+
+    public void handleSpawnZombieVillager(LivingEntity entityliving) {
+        CraftVillager craftVillager = (CraftVillager) entityliving;
+        Entity vehicle = craftVillager.getVehicle();
+
+        EntityVillager entityvillager = craftVillager.getHandle();
+        VillagerData villagerData = entityvillager.getVillagerData();
+        Reputation reputation = entityvillager.fj();
+        int experience = entityvillager.getExperience();
+        MerchantRecipeList offers = entityvillager.getOffers();
+
+        // Transform Villager into Zombie Villager
+        EntityZombieVillager entityZombieVillager = entityvillager.a(
+                EntityTypes.ZOMBIE_VILLAGER,
+                true,
+                TransformReason.INFECTION,
+                SpawnReason.INFECTION
+        );
+        if (entityZombieVillager == null) {
+            return;
+        }
+        CraftVillagerZombie craftVillagerZombie = (CraftVillagerZombie) entityZombieVillager.getBukkitEntity();
+
+        if (vehicle != null && !vehicle.getPassengers().contains(craftVillagerZombie)) {
+            vehicle.addPassenger(craftVillagerZombie);
+>>>>>>> parent of 688c16c (Minor changes)
         }
 
         if (vehicle != null) { // Make entity ride vehicle if the original was in one
