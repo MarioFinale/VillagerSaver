@@ -1,17 +1,5 @@
 name: VillagerSaver
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-version: 1.1.6
-=======
-version: 1.1.5
->>>>>>> parent of 688c16c (Minor changes)
-=======
-version: 1.1.5
->>>>>>> parent of 688c16c (Minor changes)
-=======
 version: 1.2.0
->>>>>>> parent of cb5e316 (Revert "Merge branch 'pr/14'")
 author: MarioFinale
 main: cl.mariofinale.villagerSaver
 api-version: 1.13
@@ -20,4 +8,3 @@ commands:
   villagersaver:
     description: VillagerSaver commands.
     usage: /villagersaver <blacklistworld - unblacklistworld>
-
