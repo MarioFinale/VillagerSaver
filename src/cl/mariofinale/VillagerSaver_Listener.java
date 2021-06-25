@@ -15,21 +15,21 @@ public class VillagerSaver_Listener implements Listener{
 
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
-        Entity villager = event.getEntity();
-        if(!(villager instanceof LivingEntity)) return;
-        LivingEntity tVillager = (LivingEntity)villager;
-        if (event.getDamager() == null) return;
-        Entity tKiller = event.getDamager();
-        if (!(tVillager.getHealth() - event.getDamage() <= 0)) return;
-        if (!(tVillager.getType() == EntityType.VILLAGER)) return;
-        if (!((tKiller.getType() == EntityType.ZOMBIE) || (tKiller.getType() == EntityType.ZOMBIE_VILLAGER)  || (tKiller.getType() == EntityType.DROWNED) || (tKiller.getType() == EntityType.HUSK) || (tKiller.getType() == EntityType.ZOMBIFIED_PIGLIN))) return;
-        if (villagerSaver.WorldBlackList.contains(tVillager.getWorld().getName())) return;
-        handleSpawnZombieVillager(tVillager);
+        Entity damagedEntity = event.getEntity();
+        if(!(damagedEntity instanceof LivingEntity)) return;
+        LivingEntity damagedVillager = (LivingEntity) damagedEntity;
+        Entity entityDamager = event.getDamager();
+        if (entityDamager == null) return;
+        if (!(damagedVillager.getHealth() - event.getDamage() <= 0)) return;
+        if (!(damagedVillager.getType() == EntityType.VILLAGER)) return;
+        if (!(VillagerSaver_PluginVars.ZombieTypes.contains(entityDamager.getType()))) return; //Check if the zombie types list contains the damager
+        if (villagerSaver.WorldBlackList.contains(damagedVillager.getWorld().getName())) return;
+        handleSpawnZombieVillager(damagedVillager);
         event.setCancelled(true);
     }
 
-    public void handleSpawnZombieVillager(LivingEntity entityliving) {
-        CraftVillager craftVillager = (CraftVillager) entityliving;
+    public void handleSpawnZombieVillager(LivingEntity livingEnt) {
+        CraftVillager craftVillager = (CraftVillager) livingEnt;
         Entity vehicle = craftVillager.getVehicle();
 
         EntityVillager entityvillager = craftVillager.getHandle();
@@ -45,9 +45,7 @@ public class VillagerSaver_Listener implements Listener{
                 TransformReason.INFECTION,
                 SpawnReason.INFECTION
         );
-        if (entityZombieVillager == null) {
-            return;
-        }
+        if (entityZombieVillager == null) return;
         CraftVillagerZombie craftVillagerZombie = (CraftVillagerZombie) entityZombieVillager.getBukkitEntity();
 
         if (vehicle != null && !vehicle.getPassengers().contains(craftVillagerZombie)) {
