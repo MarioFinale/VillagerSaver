@@ -178,6 +178,7 @@ public class VillagerSaver_Listener implements Listener{
         if (!(tVillager.getHealth() - event.getDamage() <= 0)) return;
         if (!(tVillager.getType() == EntityType.VILLAGER)) return;
 <<<<<<< HEAD
+<<<<<<< HEAD
         if (!((tKiller.getType() == EntityType.ZOMBIE) || (tKiller.getType() == EntityType.ZOMBIE_VILLAGER)  || (tKiller.getType() == EntityType.DROWNED) || (tKiller.getType() == EntityType.HUSK))) return;
         if (villagerSaver.WorldBlackList.contains(tVillager.getWorld().getName())) return;
         StoreAndClearVillager(villager);
@@ -236,6 +237,14 @@ public class VillagerSaver_Listener implements Listener{
         event.setCancelled(true);
     }
 
+=======
+        if (!((tKiller.getType() == EntityType.ZOMBIE) || (tKiller.getType() == EntityType.ZOMBIE_VILLAGER)  || (tKiller.getType() == EntityType.DROWNED) || (tKiller.getType() == EntityType.HUSK) || (tKiller.getType() == EntityType.ZOMBIFIED_PIGLIN))) return;
+        if (villagerSaver.WorldBlackList.contains(tVillager.getWorld().getName())) return;
+        handleSpawnZombieVillager(tVillager);
+        event.setCancelled(true);
+    }
+
+>>>>>>> parent of 688c16c (Minor changes)
     public void handleSpawnZombieVillager(LivingEntity entityliving) {
         CraftVillager craftVillager = (CraftVillager) entityliving;
         Entity vehicle = craftVillager.getVehicle();
