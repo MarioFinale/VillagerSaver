@@ -7,7 +7,6 @@ import java.io.File;
 import java.util.*;
 
 public class villagerSaver extends JavaPlugin{
-
     public static ArrayList<String> WorldBlackList = new ArrayList<>();
     public static Plugin plugin;
 

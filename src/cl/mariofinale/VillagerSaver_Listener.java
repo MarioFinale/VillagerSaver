@@ -37,7 +37,7 @@ public class VillagerSaver_Listener implements Listener{
 
         EntityVillager entityvillager = craftVillager.getHandle();
         VillagerData villagerData = entityvillager.getVillagerData();
-        Reputation reputation = entityvillager.fS();
+        Reputation reputation = entityvillager.fT();
         int experience = entityvillager.getExperience();
         MerchantRecipeList offers = entityvillager.getOffers();
 
