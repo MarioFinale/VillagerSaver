@@ -1,6 +1,8 @@
 # VillagerSaver
  Minecraft plugin for Spigot
  
+Resource on Spigot Website: https://www.spigotmc.org/resources/villager-saver-1-17-1.84738/
+ 
 Prevents the death of villagers from zombies. They will be always converted to zombie villagers so, worst case scenario the player can just heal them.
 It preserves trades, homes, job location and updates reputation.
 
