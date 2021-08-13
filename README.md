@@ -8,6 +8,13 @@ It preserves trades, homes, job location and updates reputation.
 
 ## Changelog
 
+### 1.2.3
+- Fixed logging (now using proper Bukkit logger, fixes #15).
+- Fixed nag message about using stdout.
+- Minor code changes to improve readability
+- Change plugin messages to better communicate plugin status.
+- Add a severe waring message about the plugin being hijacked and advising user to always download the plugin from a trusted source (GitHub). Fixes #16
+
 ### 1.2.2
 - Updated to 1.17.1
 

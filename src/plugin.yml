@@ -1,7 +1,7 @@
 name: VillagerSaver
-version: 1.2.2
+version: 1.2.3
 authors: [MarioFinale, Kasama]
-main: cl.mariofinale.villagerSaver
+main: cl.mariofinale.VillagerSaver
 api-version: 1.17
 website: https://github.com/MarioFinale/VillagerSaver
 commands:

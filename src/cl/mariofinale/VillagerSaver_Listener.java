@@ -7,7 +7,6 @@ import net.minecraft.world.entity.npc.*;
 import net.minecraft.world.item.trading.MerchantRecipeList;
 import org.bukkit.craftbukkit.v1_17_R1.entity.*;
 import org.bukkit.entity.*;
-import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityTransformEvent.TransformReason;
@@ -16,22 +15,23 @@ import org.bukkit.event.Listener;
 
 public class VillagerSaver_Listener implements Listener{
 
+    /** @noinspection unused*/
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
         Entity damagedEntity = event.getEntity();
         if(!(damagedEntity instanceof LivingEntity)) return; //Check if the damaged entity is a living entity
         LivingEntity damagedVillager = (LivingEntity) damagedEntity;
         Entity entityDamager = event.getDamager();
-        if (entityDamager == null) return; //Check if the damage was issued by an entity
+        if (!entityDamager.isValid()) return; //Check if the damage was issued by a valid entity
         if (!(damagedVillager.getHealth() - event.getDamage() <= 0)) return; //Check if the damage is enough to kill the entity
         if (!(damagedVillager.getType() == EntityType.VILLAGER)) return; //Check if the damaged entity is a Villager
         if (!(VillagerSaver_PluginVars.ZombieTypes.contains(entityDamager.getType()))) return; //Check if the zombie types list contains the damager
-        if (villagerSaver.WorldBlackList.contains(damagedVillager.getWorld().getName())) return; //Check if the villager is not in a blacklisted World
+        if (VillagerSaver.WorldBlackList.contains(damagedVillager.getWorld().getName())) return; //Check if the villager is not in a blacklisted World
         handleSpawnZombieVillager(damagedVillager);
         event.setCancelled(true);
     }
 
-    public void handleSpawnZombieVillager(LivingEntity livingEnt) {
+    private void handleSpawnZombieVillager(LivingEntity livingEnt) {
         CraftVillager craftVillager = (CraftVillager) livingEnt;
         Entity vehicle = craftVillager.getVehicle();
 

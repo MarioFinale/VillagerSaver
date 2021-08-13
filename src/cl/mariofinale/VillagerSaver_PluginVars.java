@@ -4,8 +4,8 @@ import org.bukkit.entity.EntityType;
 import java.util.ArrayList;
 
 public class VillagerSaver_PluginVars {
-    public static String PluginPrefix = ChatColor.BOLD + "" + ChatColor.GREEN + "[Villager Saver]:" + ChatColor.RESET;
-    public static ArrayList ZombieTypes = new ArrayList<EntityType>(){
+    public static final String PluginPrefix = ChatColor.BOLD + "" + ChatColor.GREEN + "[Villager Saver]:" + ChatColor.RESET;
+    public static final ArrayList ZombieTypes = new ArrayList<EntityType>(){
         {
             add(EntityType.ZOMBIE);
             add(EntityType.ZOMBIE_VILLAGER);

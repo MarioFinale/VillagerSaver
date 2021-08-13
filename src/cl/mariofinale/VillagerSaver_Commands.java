@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import java.util.ArrayList;
 
+/** @noinspection unused*/
 public class VillagerSaver_Commands implements CommandExecutor {
 
     @Override
@@ -15,7 +16,7 @@ public class VillagerSaver_Commands implements CommandExecutor {
             return true;
         }
         Player player = (Player) sender;
-        if (player == null) return true;
+        if (!player.isValid()) return true;
         if ((args == null || args.length <= 1)) {
             return false;
         }
@@ -29,33 +30,35 @@ public class VillagerSaver_Commands implements CommandExecutor {
         }
     }
 
-    public static boolean AddWorldToBlackList(Player player, String worldName) {
+    /** @noinspection SameReturnValue*/
+    private static boolean AddWorldToBlackList(Player player, String worldName) {
         ArrayList<String> worldList = new ArrayList<>();
         for (World world : Bukkit.getWorlds()){
             worldList.add(world.getName());
         }
         if (worldList.contains(worldName)){
-            if (!villagerSaver.WorldBlackList.contains(worldName)){
-                villagerSaver.WorldBlackList.add(worldName);
+            if (!VillagerSaver.WorldBlackList.contains(worldName)){
+                VillagerSaver.WorldBlackList.add(worldName);
                 SendMessageToPlayer(player, "The World '" + worldName + "' was added to the blacklist.");
             }else{
                 SendMessageToPlayer(player, "The World '" + worldName + "' already is on the blacklist.");
             }
         }else {
             SendMessageToPlayer(player, "The World '" + worldName + "' does not exist.");
-            String availableWorlds = "";
+            StringBuilder availableWorlds = new StringBuilder();
             for (String wN : worldList){
-                availableWorlds = availableWorlds + wN + " - ";
+                availableWorlds.append(wN).append(" - ");
             }
-            availableWorlds = availableWorlds.substring(0,availableWorlds.length() - 3).trim();
+            availableWorlds = new StringBuilder(availableWorlds.substring(0, availableWorlds.length() - 3).trim());
             SendMessageToPlayer(player, "Available Worlds: " + availableWorlds + "");
         }
         return true;
     }
 
-    public static boolean RemoveWorldFromTheBlackList(Player player, String worldName) {
-        if (villagerSaver.WorldBlackList.contains(worldName)){
-            villagerSaver.WorldBlackList.remove(worldName);
+    /** @noinspection SameReturnValue*/
+    private static boolean RemoveWorldFromTheBlackList(Player player, String worldName) {
+        if (VillagerSaver.WorldBlackList.contains(worldName)){
+            VillagerSaver.WorldBlackList.remove(worldName);
             SendMessageToPlayer(player, "The World '" + worldName + "' was removed from the blacklist.");
         }else {
             SendMessageToPlayer(player, "The World '" + worldName + "' is not on the blacklist.");
@@ -63,13 +66,12 @@ public class VillagerSaver_Commands implements CommandExecutor {
         return true;
     }
 
-    public static boolean SendMessageToPlayer(Player player, String message) {
-        if (!player.isOnline()) return false;
-        if (player.isBanned()) return false;
-        if ((player == null)) return false;
+    private static void SendMessageToPlayer(Player player, String message) {
+        if (!player.isValid()) return;
+        if (player.isBanned()) return;
+        if (!player.isOnline()) return;
         String resultingMessage = VillagerSaver_PluginVars.PluginPrefix + " " + message;
         player.sendMessage(resultingMessage);
-        return true;
     }
 
 
