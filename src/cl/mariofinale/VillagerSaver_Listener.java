@@ -1,11 +1,10 @@
 package cl.mariofinale;
-import net.minecraft.nbt.DynamicOpsNBT;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.entity.EntityTypes;
-import net.minecraft.world.entity.ai.gossip.Reputation;
 import net.minecraft.world.entity.monster.EntityZombieVillager;
 import net.minecraft.world.entity.npc.*;
-import net.minecraft.world.item.trading.MerchantRecipeList;
-import org.bukkit.craftbukkit.v1_17_R1.entity.*;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.craftbukkit.v1_18_R1.entity.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
@@ -34,32 +33,38 @@ public class VillagerSaver_Listener implements Listener{
     private void handleSpawnZombieVillager(LivingEntity livingEnt) {
         CraftVillager craftVillager = (CraftVillager) livingEnt;
         Entity vehicle = craftVillager.getVehicle();
-
         EntityVillager entityvillager = craftVillager.getHandle();
-        VillagerData villagerData = entityvillager.getVillagerData();
-        Reputation reputation = entityvillager.fT();
-        int experience = entityvillager.getExperience();
-        MerchantRecipeList offers = entityvillager.getOffers();
+        VillagerData villagerData = entityvillager.fJ();
+        int experience = entityvillager.t();;
+        EntityVillagerAbstract villagerAbstract = entityvillager;
+        NBTTagCompound nbtTagCompound = new NBTTagCompound();
+        villagerAbstract.b(nbtTagCompound);
+        Boolean isAdult = craftVillager.isAdult();
 
-        // Transform Villager into Zombie Villager
-        EntityZombieVillager entityZombieVillager = entityvillager.a(
+        // Transform Villager into Zombie Villager.
+        EntityZombieVillager entityZombieVillager = villagerAbstract.convertTo(
                 EntityTypes.bg,
                 true,
                 TransformReason.INFECTION,
-                SpawnReason.INFECTION
-        );
-        if (entityZombieVillager == null) return;
+                SpawnReason.INFECTION);
+        if (entityZombieVillager == null) return; //Can happen in some rare cases.
         CraftVillagerZombie craftVillagerZombie = (CraftVillagerZombie) entityZombieVillager.getBukkitEntity();
-
+        //Fix minecart/boat demounting bug
         if (vehicle != null && !vehicle.getPassengers().contains(craftVillagerZombie)) {
             vehicle.addPassenger(craftVillagerZombie);
         }
 
-        entityZombieVillager.setVillagerData(villagerData);
-        // retain entityZombieVillager reputation with BaseNBT from the previous villager
-        // DynamicOpsNBT.a is necessary because Gossips don't follow a specific Schema
-        entityZombieVillager.a(reputation.a(DynamicOpsNBT.a).getValue());
+        //Store the Villager metadata in the Zombie Villager.
+        entityZombieVillager.a(villagerData);
         entityZombieVillager.a(experience);
-        entityZombieVillager.setOffers(offers.a());
+        entityZombieVillager.a(nbtTagCompound);
+
+        //The Zombie Villager will inherit the speed of the fleeing Villager. We need to set it back to the normal speed.
+        entityZombieVillager.craftAttributes.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.23);
+
+        //Set the Zombie Villager to a baby if the infected villager was one.
+        if (!isAdult){
+            craftVillagerZombie.setBaby();
+        }
     }
 }
