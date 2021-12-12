@@ -8,6 +8,9 @@ It preserves trades, homes, job location and updates reputation.
 
 ## Changelog
 
+### 1.2.4
+- Updated to 1.18 - 1.18.1.
+
 ### 1.2.3
 - Fixed logging (now using proper Bukkit logger, fixes #15).
 - Fixed nag message about using stdout.

@@ -17,10 +17,7 @@ public class VillagerSaver extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
-        LogError("WARNING, WARNING. PLEASE READ ME:");
-        LogError("IF YOU DOWNLOADED VILLAGERSAVER BETWEEN JULY 28 AND AUGUST 11 2021 YOU NEED TO DELETE IT IMMEDIATELY.");
-        LogWarn("PLEASE MAKE SURE TO ALWAYS DOWNLOAD THE PLUGIN FROM THE GITHUB RELEASES PAGE: https://github.com/MarioFinale/VillagerSaver/releases");
-        LogWarn("DO NOT DOWNLOAD THIS PLUGIN FROM ANY OTHER UNTRUSTED SOURCE!");
+        LogWarn("Make sure you downloaded a trusted version of this plugin on: https://github.com/MarioFinale/VillagerSaver/releases");
         LogInfo("Registering listener.");
         getServer().getPluginManager().registerEvents(new VillagerSaver_Listener(), this);
         LogInfo("Listener registered.");
