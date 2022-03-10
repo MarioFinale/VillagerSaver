@@ -10,7 +10,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://F:/lib/bukkit-1.18-R0.1-SNAPSHOT.jar!/" />
+          <root url="jar://F:/lib/spigot-api-1.18.2-R0.1-SNAPSHOT.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -19,7 +19,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://F:/lib/craftbukkit-1.18-R0.1-SNAPSHOT-remapped.jar!/" />
+          <root url="jar://F:/lib/craftbukkit-1.18.2-R0.1-SNAPSHOT-remapped.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -28,25 +28,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://F:/lib/mojang_1.18.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://F:/lib/paper-1.18.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://F:/lib/spigot-api-1.18-R0.1-SNAPSHOT.jar!/" />
+          <root url="jar://F:/lib/datafixerupper-4.1.27.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

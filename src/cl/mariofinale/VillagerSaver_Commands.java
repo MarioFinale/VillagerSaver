@@ -1,11 +1,13 @@
 package cl.mariofinale;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /** @noinspection unused*/
 public class VillagerSaver_Commands implements CommandExecutor {

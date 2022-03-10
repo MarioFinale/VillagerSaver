@@ -4,7 +4,7 @@ import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.monster.EntityZombieVillager;
 import net.minecraft.world.entity.npc.*;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.craftbukkit.v1_18_R1.entity.*;
+import org.bukkit.craftbukkit.v1_18_R2.entity.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
@@ -34,7 +34,7 @@ public class VillagerSaver_Listener implements Listener{
         CraftVillager craftVillager = (CraftVillager) livingEnt;
         Entity vehicle = craftVillager.getVehicle();
         EntityVillager entityvillager = craftVillager.getHandle();
-        VillagerData villagerData = entityvillager.fJ();
+        VillagerData villagerData = entityvillager.fK();
         int experience = entityvillager.t();;
         EntityVillagerAbstract villagerAbstract = entityvillager;
         NBTTagCompound nbtTagCompound = new NBTTagCompound();
