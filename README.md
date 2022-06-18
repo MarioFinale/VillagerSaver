@@ -8,6 +8,9 @@ It preserves trades, homes, job location and updates reputation.
 
 ## Changelog
 
+### 1.3.1
+- Updated to 1.19.
+
 ### 1.2.5
 - Updated to 1.18.2.
 
