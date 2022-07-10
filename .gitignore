@@ -23,5 +23,10 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# Maven Files #
 pom.xml
+target/
+
+# VS Code Files #
 workspace.code-workspace
