@@ -1,0 +1,10 @@
+name: VillagerSaver
+version: 1.3.1
+authors: [MarioFinale, Kasama]
+main: cl.mariofinale.VillagerSaver
+api-version: 1.19
+website: https://github.com/MarioFinale/VillagerSaver
+commands:
+  villagersaver:
+    description: VillagerSaver commands.
+    usage: /villagersaver <blacklistworld - unblacklistworld>
