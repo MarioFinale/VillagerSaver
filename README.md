@@ -8,6 +8,10 @@ It preserves trades, homes, job location and updates reputation.
 
 ## Changelog
 
+### 1.3.2
+- Plugin now checks on death events for improved performance (fewer function calls)
+- Improved readability
+
 ### 1.3.1
 - Updated to 1.19.
 
