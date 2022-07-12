@@ -10,6 +10,7 @@ It preserves trades, homes, job location and updates reputation.
 
 ### 1.3.2
 - Plugin now checks on death events for improved performance (fewer function calls)
+- Plugin now uses the *zombify* function (Should fix [#18](https://github.com/MarioFinale/VillagerSaver/issues/18)) 
 - Improved readability
 
 ### 1.3.1
@@ -22,11 +23,11 @@ It preserves trades, homes, job location and updates reputation.
 - Updated to 1.18 - 1.18.1.
 
 ### 1.2.3
-- Fixed logging (now using proper Bukkit logger, fixes #15).
+- Fixed logging (now using proper Bukkit logger, fixes [#15]https://github.com/MarioFinale/VillagerSaver/issues/15)).
 - Fixed nag message about using stdout.
 - Minor code changes to improve readability
 - Change plugin messages to better communicate plugin status.
-- Add a severe waring message about the plugin being hijacked and advising user to always download the plugin from a trusted source (GitHub). Fixes #16
+- Add a severe waring message about the plugin being hijacked and advising user to always download the plugin from a trusted source (GitHub). Fixes [#16](https://github.com/MarioFinale/VillagerSaver/issues/16).
 
 ### 1.2.2
 - Updated to 1.17.1
