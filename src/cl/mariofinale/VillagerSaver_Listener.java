@@ -1,5 +1,5 @@
 package cl.mariofinale;
-import net.minecraft.world.entity.EntityTypes;
+
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.EventHandler;

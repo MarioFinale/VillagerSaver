@@ -8,6 +8,9 @@ It preserves trades, homes, job location and updates reputation.
 
 ## Changelog
 
+### 1.3.3
+- Updated to 1.19.2.
+
 ### 1.3.2
 - Plugin now checks on death events for improved performance (fewer function calls)
 - Plugin now uses the *zombify* function (Should fix [#18](https://github.com/MarioFinale/VillagerSaver/issues/18)) 
