@@ -10,7 +10,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://F:/lib/Lib 1.19.2/craftbukkit-1.19.2-R0.1-SNAPSHOT-remapped.jar!/" />
+          <root url="jar://F:/lib/Lib 1.20.1/authlib-4.0.43.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -19,7 +19,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://F:/lib/Lib 1.19.2/datafixerupper-5.0.28.jar!/" />
+          <root url="jar://F:/lib/Lib 1.20.1/brigadier-1.1.8.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -28,7 +28,34 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://F:/lib/Lib 1.19.2/bukkit-1.19.2-R0.1-SNAPSHOT.jar!/" />
+          <root url="jar://F:/lib/Lib 1.20.1/bungeecord-chat-1.16-R0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://F:/lib/Lib 1.20.1/gson-2.10.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://F:/lib/Lib 1.20.1/guava-31.1-jre.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://F:/lib/Lib 1.20.1/bukkit-1.20.1-R0.1-SNAPSHOT.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
