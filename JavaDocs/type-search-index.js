@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"cl.mariofinale","l":"VillagerSaver"},{"p":"cl.mariofinale","l":"VillagerSaver_Commands"},{"p":"cl.mariofinale","l":"VillagerSaver_Listener"},{"p":"cl.mariofinale","l":"VillagerSaver_PluginVars"}];updateSearchResults();
