@@ -8,6 +8,12 @@ It preserves trades, homes, job location and updates reputation.
 
 ## Changelog
 
+### 1.4.0
+- Now it converts Villagers Killed by Drowned tridents or a [TNT explosion primed by a Trident](https://www.youtube.com/watch?v=qR_jv8wefAY).
+
+### 1.3.5
+- Specify API version as String.
+
 ### 1.3.4
 - Minor changes.
 - Updated to 1.20.1.
