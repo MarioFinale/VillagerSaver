@@ -1,9 +1,6 @@
 package cl.mariofinale;
 
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.TNTPrimed;
-import org.bukkit.entity.Villager;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -68,8 +65,21 @@ public class VillagerSaver_Listener implements Listener {
                 // Set the damager as the entity attacking
                 return ((EntityDamageByEntityEvent) damageCauseEvent).getDamager();
             case ENTITY_EXPLOSION:
-                // Set the damager as the entity that primed the TNT
-                return ((TNTPrimed) ((EntityDamageByEntityEvent) damageCauseEvent).getDamager()).getSource();
+                Entity damagerEntity = ((EntityDamageByEntityEvent) damageCauseEvent).getDamager();
+                if (damagerEntity instanceof TNTPrimed){
+                    // Set the damager as the entity that primed the TNT
+                    return ((TNTPrimed) damagerEntity).getSource();
+                }
+                if (damagerEntity instanceof Creeper){
+                    // Get the damager as the entity that the Creeper was Targeting.
+                    Entity creeperTarget = ((Creeper) damagerEntity).getTarget();
+                    //Check if the target entity is valid.
+                    if(creeperTarget != null && creeperTarget.isValid()){
+                        // Set the damager as the entity that the Creeper was Targeting.
+                        return creeperTarget;
+                    }
+                    //We will ignore other sources of explosions.
+                }
             default:
                 return null;
         }
@@ -94,6 +104,9 @@ public class VillagerSaver_Listener implements Listener {
      * @return true if the entity is a zombie variant, false otherwise.
      */
     private boolean isZombieVariant(Entity entity) {
+        //If instance of player, return false immediately.
+        if (entity instanceof Player) return false;
+        //Check if entity type matches any of the Zombie Types.
         return VillagerSaver_PluginVars.ZombieTypes.contains(entity.getType());
     }
 

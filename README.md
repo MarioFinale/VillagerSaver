@@ -8,6 +8,9 @@ It preserves trades, homes, job location and updates reputation.
 
 ## Changelog
 
+### 1.4.1
+- Fixes [#22](https://github.com/MarioFinale/VillagerSaver/issues/22) (ClassCastException when a Villager is Killed by a Creeper Explosion).
+
 ### 1.4.0
 - Now it converts Villagers Killed by Drowned tridents or a [TNT explosion primed by a Trident](https://www.youtube.com/watch?v=qR_jv8wefAY).
 
