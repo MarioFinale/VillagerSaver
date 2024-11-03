@@ -8,6 +8,9 @@ It preserves trades, homes, job location and updates reputation.
 
 ## Changelog
 
+### 1.4.2
+- Updated to 1.21.
+
 ### 1.4.1
 - Fixes [#22](https://github.com/MarioFinale/VillagerSaver/issues/22) (ClassCastException when a Villager is Killed by a Creeper Explosion).
 
