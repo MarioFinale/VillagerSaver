@@ -19,7 +19,7 @@ public class VillagerSaver_PluginVars {
      * The list of zombie entity types.
      * These are the entity types that are considered zombie variants.
      */
-    public static final ArrayList ZombieTypes = new ArrayList<EntityType>() {
+    public static final ArrayList<EntityType> ZombieTypes = new ArrayList<>() {
         {
             add(EntityType.ZOMBIE);
             add(EntityType.ZOMBIE_VILLAGER);
