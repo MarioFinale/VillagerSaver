@@ -8,6 +8,9 @@ It preserves trades, homes, job location and updates reputation.
 
 ## Changelog
 
+### 1.4.3
+- Compiled against Java 21.
+
 ### 1.4.2
 - Updated to 1.21. (Requires java 23)
 
