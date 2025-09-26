@@ -10,14 +10,11 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="file://F:/lib/Lib 1.21.1" />
+          <root url="file://F:/lib/Lib 1.21.8" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES>
-          <root url="file://F:/lib/Lib 1.21.1" />
-        </SOURCES>
-        <jarDirectory url="file://F:/lib/Lib 1.21.1" recursive="false" />
-        <jarDirectory url="file://F:/lib/Lib 1.21.1" recursive="false" type="SOURCES" />
+        <SOURCES />
+        <jarDirectory url="file://F:/lib/Lib 1.21.8" recursive="false" />
       </library>
     </orderEntry>
   </component>

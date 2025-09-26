@@ -7,112 +7,115 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.HashSet;
-import java.util.stream.Collectors;
-
 /**
- * Class that handles the commands for the VillagerSaver plugin.
+ * Handles command execution for the VillagerSaver plugin, allowing players to manage the world blacklist.
+ * Supports adding and removing worlds from the blacklist via the "/villagersaver" command.
+ * Requires the "villagersaver.blacklist" permission to execute blacklist-modifying commands.
  */
 public class VillagerSaver_Commands implements CommandExecutor {
-
+    private final VillagerSaver plugin;
 
     /**
-     * Handles the execution of a command.
+     * Constructs a new command handler with a reference to the main plugin instance.
      *
-     * @param sender  The sender of the command.
-     * @param command The command that was executed.
-     * @param label   The alias used for the command.
-     * @param args    The arguments provided with the command.
-     * @return true if the command was executed successfully, false otherwise.
+     * @param plugin The VillagerSaver plugin instance, used to access and modify the world blacklist
+     */
+    public VillagerSaver_Commands(VillagerSaver plugin) {
+        this.plugin = plugin;
+    }
+
+    /**
+     * Executes the VillagerSaver command based on the provided arguments.
+     * Supports "blacklistworld" to add a world to the blacklist and "unblacklistworld" to remove one.
+     * Only players with the "villagersaver.blacklist" permission can modify the blacklist.
+     * Non-player senders (e.g., console) and invalid players are rejected with appropriate feedback.
+     *
+     * @param sender  The entity that issued the command (must be a player)
+     * @param command The command object representing "villagersaver"
+     * @param label   The alias used to execute the command (e.g., "villagersaver")
+     * @param args    The arguments provided with the command (minimum 2 expected for valid execution)
+     * @return true if the command was handled successfully (including error cases), false otherwise
      */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Check if the sender is a player
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage("This command can only be run by a player.");
             return true;
         }
-        Player player = (Player) sender;
-        // Check if the player is valid
         if (!player.isValid()) return true;
-        // Check if there are enough arguments
-        if ((args == null || args.length <= 1)) {
+
+        if (!player.hasPermission("villagersaver.blacklist")) {
+            sendMessageToPlayer(player, "You don’t have permission to use this command.");
+            return true;
+        }
+
+        if (args.length < 2) {
+            sendMessageToPlayer(player, "Usage: /villagersaver <blacklistworld|unblacklistworld> <world>");
+            return true;
+        }
+
+        return switch (args[0].toUpperCase()) {
+            case "BLACKLISTWORLD" -> tryAddWorldToBlacklist(player, args[1]);
+            case "UNBLACKLISTWORLD" -> removeWorldFromBlacklist(player, args[1]);
+            default -> {
+                sendMessageToPlayer(player, "Unknown subcommand. Use blacklistworld or unblacklistworld.");
+                yield true;
+            }
+        };
+    }
+
+    /**
+     * Attempts to add a world to the blacklist if it exists on the server.
+     * Sends feedback to the player indicating whether the world was added, already blacklisted, or doesn’t exist.
+     *
+     * @param player    The player executing the command
+     * @param worldName The name of the world to add to the blacklist
+     * @return true if the operation was successful (world exists and was processed), false if the world doesn’t exist
+     */
+    private boolean tryAddWorldToBlacklist(Player player, String worldName) {
+        World world = Bukkit.getWorld(worldName);
+        if (world == null) { // Check if world exists
+            sendMessageToPlayer(player, "The world '" + worldName + "' does not exist.");
             return false;
         }
-        // Check the command argument
-        switch (args[0].toUpperCase()) {
-            case "BLACKLISTWORLD":
-                return AddToBlacklistIfWorldExists(player, args[1]);
-            case "UNBLACKLISTWORLD":
-                return RemoveFromTheBlackListIfWorldExists(player, args[1]);
-            default:
-                return false;
-        }
-    }
-
-    /**
-     * Adds a world to the blacklist if it exists.
-     *
-     * @param player    The player executing the command.
-     * @param worldName The name of the world to add to the blacklist.
-     * @return true if the world was added to the blacklist, false otherwise.
-     */
-    private static boolean AddToBlacklistIfWorldExists(Player player, String worldName) {
-        // Get a list of all available worlds
-        HashSet<String> worldList = new HashSet<>();
-        for (World world : Bukkit.getWorlds()) {
-            worldList.add(world.getName());
-        }
-        // Check if the specified world exists
-        if (worldList.contains(worldName)) {
-            // Check if the world is already in the blacklist
-            if (!VillagerSaver.WorldBlackList.contains(worldName)) {
-                // Add the world to the blacklist
-                VillagerSaver.WorldBlackList.add(worldName);
-                SendMessageToPlayer(player, "The World '" + worldName + "' was added to the blacklist.");
-            } else {
-                SendMessageToPlayer(player, "The World '" + worldName + "' is already on the blacklist.");
-            }
+        if (!plugin.getWorldBlackList().contains(worldName)) {
+            plugin.getWorldBlackList().add(worldName);
+            sendMessageToPlayer(player, "The world '" + worldName + "' was added to the blacklist.");
         } else {
-            SendMessageToPlayer(player, "The World '" + worldName + "' does not exist.");
-            String availableWorlds = worldList.stream().collect(Collectors.joining(" - "));
-            SendMessageToPlayer(player, "Available Worlds: " + availableWorlds);
-        }
-        return VillagerSaver.WorldBlackList.contains(worldName);
-    }
-
-    /**
-     * Removes a world from the blacklist if it exists.
-     *
-     * @param player    The player executing the command.
-     * @param worldName The name of the world to remove from the blacklist.
-     * @return true if the world was removed from the blacklist, false otherwise.
-     */
-    private static boolean RemoveFromTheBlackListIfWorldExists(Player player, String worldName) {
-        // Check if the world is in the blacklist
-        if (VillagerSaver.WorldBlackList.contains(worldName)) {
-            // Remove the world from the blacklist
-            VillagerSaver.WorldBlackList.remove(worldName);
-            SendMessageToPlayer(player, "The World '" + worldName + "' was removed from the blacklist.");
-        } else {
-            SendMessageToPlayer(player, "The World '" + worldName + "' is not on the blacklist.");
+            sendMessageToPlayer(player, "The world '" + worldName + "' is already blacklisted.");
         }
         return true;
     }
 
     /**
-     * Sends a message to a player.
+     * Removes a world from the blacklist if it is currently listed.
+     * Sends feedback to the player indicating whether the world was removed or wasn’t blacklisted.
+     * Does not check if the world exists on the server, only if it’s in the blacklist.
      *
-     * @param player  The player to send the message to.
-     * @param message The message to send.
+     * @param player    The player executing the command
+     * @param worldName The name of the world to remove from the blacklist
+     * @return true if the operation was successful (regardless of whether the world was removed)
      */
-    private static void SendMessageToPlayer(Player player, String message) {
-        // Check if the player is valid, banned, or online
-        if (!player.isValid()) return;
-        if (player.isBanned()) return;
-        if (!player.isOnline()) return;
-        // Construct the resulting message with the plugin prefix
+    private boolean removeWorldFromBlacklist(Player player, String worldName) {
+        if (plugin.getWorldBlackList().contains(worldName)) {
+            plugin.getWorldBlackList().remove(worldName);
+            sendMessageToPlayer(player, "The world '" + worldName + "' was removed from the blacklist.");
+        } else {
+            sendMessageToPlayer(player, "The world '" + worldName + "' is not on the blacklist.");
+        }
+        return true;
+    }
+
+    /**
+     * Sends a formatted message to the player with the plugin prefix, if the player is valid and online.
+     * No message is sent if the player is invalid, banned, or offline.
+     *
+     * @param player  The player to receive the message
+     * @param message The message content to send (appended to the plugin prefix)
+     */
+    private static void sendMessageToPlayer(Player player, String message) {
+        if (!player.isValid() || player.isBanned() || !player.isOnline()) return;
         String resultingMessage = VillagerSaver_PluginVars.PluginPrefix + " " + message;
-        // Send the message to the player
         player.sendMessage(resultingMessage);
     }
 }

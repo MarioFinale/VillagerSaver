@@ -1,95 +1,106 @@
 package cl.mariofinale;
 
+import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.projectiles.ProjectileSource;
 
 /**
- * Class that implements the Listener interface to handle entity death events.
+ * Implements the Listener interface to handle villager death events in the VillagerSaver plugin.
+ * When a villager is killed by a zombie variant in a non-blacklisted world, it is zombified instead of dying.
  */
 public class VillagerSaver_Listener implements Listener {
+    private final VillagerSaver plugin;
 
     /**
-     * Event handler for the EntityDeathEvent.
+     * Constructs a new listener with a reference to the main plugin instance.
      *
-     * @param event The EntityDeathEvent.
+     * @param plugin The VillagerSaver plugin instance, used to access the world blacklist and logging
+     */
+    public VillagerSaver_Listener(VillagerSaver plugin) {
+        this.plugin = plugin;
+    }
+
+    /**
+     * Handles the EntityDeathEvent to detect villager deaths and zombify them under specific conditions.
+     * A villager is zombified if it is killed by a zombie variant (e.g., zombie, husk, drowned) via entity attack,
+     * projectile, or explosion (caused by one the zombie variants), and the villager's world is not blacklisted.
+     * Logs an error if zombification fails.
+     *
+     * @param event The EntityDeathEvent triggered when an entity dies
      */
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
-        // Check if the dead entity is a villager
-        if (!(event.getEntity() instanceof Villager)) return;
+        if (!(event.getEntity() instanceof Villager villager)) return;
 
-        Villager villagerEnt = (Villager) event.getEntity();
-        EntityDamageEvent damageCauseEvent = villagerEnt.getLastDamageCause();
+        EntityDamageEvent damageCauseEvent = villager.getLastDamageCause();
+        if (damageCauseEvent == null) return;
         EntityDamageEvent.DamageCause cause = damageCauseEvent.getCause();
 
-        // Check if the death was caused by another entity or an explosion or a projectile
         if (!isValidDamageCause(cause)) return;
 
-        // Get the killer entity
         Entity killerEntity = getKillerEntity(damageCauseEvent, cause);
+        if (killerEntity == null || !killerEntity.isValid() || !isZombieVariant(killerEntity)) return;
 
-        // Check if the killer is not null
-        if (killerEntity == null) return;
+        if (isVillagerWorldBlacklisted(villager)) return;
+        Location loc = villager.getLocation();
+        String worldName = villager.getWorld().getName();
+        String coordinates = String.format("at %d %d %d", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 
-        // Check if the killer is a valid entity
-        if (!killerEntity.isValid()) return;
-
-        // Check if the killer is a zombie variant
-        if (!isZombieVariant(killerEntity)) return;
-
-        // Check if the villager is in a blacklisted world
-        if (isVillagerWorldBlacklisted(villagerEnt)) return;
-
-        // Zombify the villager
-        villagerEnt.zombify();
+        try {
+            villager.zombify();
+            plugin.logInfo("Villager zombified in world " + worldName + " " + coordinates);
+        } catch (IllegalStateException e) {
+            plugin.logError("Failed to zombify villager in world " + worldName + " " + coordinates + ": " + e.getMessage());
+        }
     }
 
-
     /**
-     * Gets the killer entity from the damage cause event.
+     * Retrieves the entity responsible for killing the villager based on the damage event.
+     * Supports projectiles (returns the shooter), direct entity attacks (returns the attacker), and explosions
+     * (returns the TNT prime source or Creeper's target, if applicable).
      *
-     * @param damageCauseEvent The damage cause event.
-     * @param cause            The damage cause.
-     * @return The killer entity, or null if not found.
+     * @param damageCauseEvent The event containing details of the damage that caused the death
+     * @param cause            The specific cause of the damage (e.g., PROJECTILE, ENTITY_ATTACK)
+     * @return The entity responsible for the damage, or null if not applicable or undetermined
      */
     private Entity getKillerEntity(EntityDamageEvent damageCauseEvent, EntityDamageEvent.DamageCause cause) {
+        if (!(damageCauseEvent instanceof EntityDamageByEntityEvent entityEvent)) return null;
+        Entity damagerEntity = entityEvent.getDamager();
+
         switch (cause) {
             case PROJECTILE:
-                // Set the damager as the entity that shot the projectile
-                return (Entity) ((Projectile) ((EntityDamageByEntityEvent) damageCauseEvent).getDamager()).getShooter();
+                if (damagerEntity instanceof Projectile projectile) {
+                    ProjectileSource shooter = projectile.getShooter();
+                    return shooter instanceof Entity ? (Entity) shooter : null;
+                }
+                return null;
             case ENTITY_ATTACK:
-                // Set the damager as the entity attacking
-                return ((EntityDamageByEntityEvent) damageCauseEvent).getDamager();
+                return damagerEntity;
             case ENTITY_EXPLOSION:
-                Entity damagerEntity = ((EntityDamageByEntityEvent) damageCauseEvent).getDamager();
-                if (damagerEntity instanceof TNTPrimed){
-                    // Set the damager as the entity that primed the TNT
-                    return ((TNTPrimed) damagerEntity).getSource();
+                if (damagerEntity instanceof TNTPrimed tnt) {
+                    return tnt.getSource();
                 }
-                if (damagerEntity instanceof Creeper){
-                    // Get the damager as the entity that the Creeper was Targeting.
-                    Entity creeperTarget = ((Creeper) damagerEntity).getTarget();
-                    //Check if the target entity is valid.
-                    if(creeperTarget != null && creeperTarget.isValid()){
-                        // Set the damager as the entity that the Creeper was Targeting.
-                        return creeperTarget;
-                    }
-                    //We will ignore other sources of explosions.
+                if (damagerEntity instanceof Creeper creeper) {
+                    Entity target = creeper.getTarget();
+                    return (target != null && target.isValid()) ? target : null;
                 }
+                return null;
             default:
                 return null;
         }
     }
 
     /**
-     * Checks if the given damage cause is valid for villager death.
+     * Determines if the damage cause is one that triggers villager zombification.
+     * Valid causes are direct entity attacks, projectiles, and entity-induced explosions.
      *
-     * @param cause The damage cause.
-     * @return true if the cause is valid, false otherwise.
+     * @param cause The damage cause to check
+     * @return true if the cause is ENTITY_ATTACK, PROJECTILE, or ENTITY_EXPLOSION, false otherwise
      */
     private boolean isValidDamageCause(EntityDamageEvent.DamageCause cause) {
         return cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK ||
@@ -98,25 +109,25 @@ public class VillagerSaver_Listener implements Listener {
     }
 
     /**
-     * Checks if the given entity is a zombie variant.
+     * Checks if the entity is a zombie variant as defined in VillagerSaver_PluginVars.ZombieTypes.
+     * Players are explicitly excluded, even if they match a zombie-like entity type.
      *
-     * @param entity The entity to check.
-     * @return true if the entity is a zombie variant, false otherwise.
+     * @param entity The entity to check
+     * @return true if the entity is a zombie variant (e.g., zombie, husk, drowned) and not a player, false otherwise
      */
     private boolean isZombieVariant(Entity entity) {
-        //If instance of player, return false immediately.
         if (entity instanceof Player) return false;
-        //Check if entity type matches any of the Zombie Types.
         return VillagerSaver_PluginVars.ZombieTypes.contains(entity.getType());
     }
 
     /**
-     * Checks if the given villager is in a blacklisted world.
+     * Checks if the villager’s world is in the plugin’s blacklist.
+     * Blacklisted worlds prevent villager zombification.
      *
-     * @param villager The villager entity.
-     * @return true if the villager is in a blacklisted world, false otherwise.
+     * @param villager The villager entity to check
+     * @return true if the villager’s world is blacklisted, false otherwise
      */
     private boolean isVillagerWorldBlacklisted(Villager villager) {
-        return VillagerSaver.WorldBlackList.contains(villager.getWorld().getName());
+        return plugin.getWorldBlackList().contains(villager.getWorld().getName());
     }
 }
